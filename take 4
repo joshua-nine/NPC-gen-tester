@@ -1,0 +1,90 @@
+import random
+
+# Lists of possible attributes for NPCs
+names = [
+    "Arin", "Brielle", "Calvin", "Delphine", "Eldric", "Fiora", "Gareth", "Hilda", "Ivor", "Jasmine",
+    "Kira", "Lysander", "Mira", "Nolan", "Oriana", "Percival", "Quinn", "Rhea", "Soren", "Thalia", "Ulric", "Vera", "Wendell", "Xara", "Yorick", "Zara"
+]
+races = [
+    "Human", "Elf", "Dwarf", "Orc", "Halfling", "Tiefling", "Dragonborn", "Gnome", "Aasimar", "Genasi", "Tabaxi", "Kenku"
+]
+classes = [
+    "Fighter", "Wizard", "Rogue", "Cleric", "Ranger", "Bard", "Paladin", "Druid", "Barbarian", "Monk", "Sorcerer", "Warlock",
+    "Artificer", "Blood Hunter"
+]
+personalities = [
+    "Friendly", "Suspicious", "Aggressive", "Helpful", "Timid", "Arrogant", "Cunning", "Charming", "Stoic", "Eccentric",
+    "Gregarious", "Sarcastic", "Melancholic", "Zealous", "Pessimistic", "Optimistic"
+]
+motivations = [
+    "Seeking revenge", "Protecting family", "Gathering information", "Making money", "Seeking adventure", "Hiding a secret",
+    "Serving a deity", "Power hungry", "Protecting a secret", "Escaping a dark past", "Finding lost knowledge", "Proving themselves"
+]
+quirks = [
+    "Always whistles", "Speaks in rhymes", "Forgets names", "Constantly hungry", "Afraid of magic", "Collects shiny objects",
+    "Talks to animals", "Never makes eye contact", "Always speaks in a whisper", "Laughs at inappropriate times", "Obsessed with cleanliness"
+]
+
+# Lists for D&D Character Sheet Attributes
+backgrounds = [
+    "Noble", "Soldier", "Criminal", "Sage", "Hermit", "Merchant", "Farmer", "Entertainer", "Gladiator", "Spy", "Acolyte", "Guild Artisan"
+]
+alignments = [
+    "Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+]
+abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+# Function to generate ability scores
+def generate_ability_scores():
+    return {ability: random.randint(3, 18) for ability in abilities}
+
+# Function to ask for additional character sheet details or custom attributes
+def ask_for_character_details():
+    details = {}
+    details["Level"] = int(input("Enter Level: "))
+    add_custom_attributes = input("Would you like to add custom attributes? (yes/no): ").strip().lower()
+    if add_custom_attributes == 'yes':
+        while True:
+            custom_key = input("Enter custom attribute name (or type 'done' to finish): ").strip()
+            if custom_key.lower() == 'done':
+                break
+            custom_value = input(f"Enter value for {custom_key}: ").strip()
+            details[custom_key] = custom_value
+    return details
+
+# Function to generate a random NPC
+def generate_npc():
+    npc = {
+        "Name": random.choice(names),
+        "Race": random.choice(races),
+        "Class": random.choice(classes),
+        "Background": random.choice(backgrounds),
+        "Alignment": random.choice(alignments),
+        "Personality": random.choice(personalities),
+        "Motivation": random.choice(motivations),
+        "Quirk": random.choice(quirks),
+        "Ability Scores": generate_ability_scores(),
+        "Character Sheet Details": ask_for_character_details()
+    }
+    return npc
+
+# Generate a specified number of NPCs
+def generate_npcs(number=1):
+    npcs = []
+    for _ in range(number):
+        npcs.append(generate_npc())
+    return npcs
+
+# Example usage
+if __name__ == "__main__":
+    num_npcs = int(input("How many NPCs would you like to generate? "))
+    generated_npcs = generate_npcs(num_npcs)
+    for i, npc in enumerate(generated_npcs, 1):
+        print(f"\nNPC {i}:\n")
+        for key, value in npc.items():
+            if isinstance(value, dict):
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    print(f"  {sub_key}: {sub_value}")
+            else:
+                print(f"{key}: {value}")

@@ -1,0 +1,93 @@
+import random
+
+# Lists of possible attributes for NPCs
+names = ["Arin", "Brielle", "Calvin", "Delphine", "Eldric", "Fiora", "Gareth", "Hilda", "Ivor", "Jasmine"]
+races = ["Human", "Elf", "Dwarf", "Orc", "Halfling", "Tiefling", "Dragonborn", "Gnome"]
+classes = ["Fighter", "Wizard", "Rogue", "Cleric", "Ranger", "Bard", "Paladin", "Druid", "Barbarian", "Monk", "Sorcerer", "Warlock"]
+personalities = ["Friendly", "Suspicious", "Aggressive", "Helpful", "Timid", "Arrogant", "Cunning", "Charming", "Stoic", "Eccentric"]
+motivations = ["Seeking revenge", "Protecting family", "Gathering information", "Making money", "Seeking adventure", "Hiding a secret", "Serving a deity", "Power hungry", "Protecting a secret"]
+quirks = ["Always whistles", "Speaks in rhymes", "Forgets names", "Constantly hungry", "Afraid of magic", "Collects shiny objects", "Talks to animals", "Never makes eye contact", "Always speaks in a whisper"]
+
+# Lists for D&D Character Sheet Attributes
+backgrounds = ["Noble", "Soldier", "Criminal", "Sage", "Hermit", "Merchant", "Farmer", "Entertainer"]
+alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+# Function to generate ability scores
+def generate_ability_scores():
+    return {ability: random.randint(3, 18) for ability in abilities}
+
+# Function to ask for additional character sheet details
+def ask_for_character_details():
+    details = {}
+    details["Armor Class"] = int(input("Enter Armor Class: "))
+    details["Hit Points"] = int(input("Enter Hit Points: "))
+    details["Proficiency Bonus"] = int(input("Enter Proficiency Bonus: "))
+    details["Speed"] = int(input("Enter Speed: "))
+    details["Initiative"] = int(input("Enter Initiative: "))
+    details["Passive Perception"] = int(input("Enter Passive Perception: "))
+    details["Hit Dice"] = input("Enter Hit Dice: ")
+    details["Saving Throws"] = {ability: input(f"Enter Saving Throw proficiency for {ability} (Yes/No): ") for ability in abilities}
+    details["Skills"] = {
+        "Animal Handling": input("Enter proficiency for Animal Handling (Yes/No): "),
+        "Insight": input("Enter proficiency for Insight (Yes/No): "),
+        "Medicine": input("Enter proficiency for Medicine (Yes/No): "),
+        "Perception": input("Enter proficiency for Perception (Yes/No): "),
+        "Survival": input("Enter proficiency for Survival (Yes/No): "),
+        "Deception": input("Enter proficiency for Deception (Yes/No): "),
+        "Intimidation": input("Enter proficiency for Intimidation (Yes/No): "),
+        "Performance": input("Enter proficiency for Performance (Yes/No): "),
+        "Persuasion": input("Enter proficiency for Persuasion (Yes/No): "),
+        "Acrobatics": input("Enter proficiency for Acrobatics (Yes/No): "),
+        "Sleight of Hand": input("Enter proficiency for Sleight of Hand (Yes/No): "),
+        "Stealth": input("Enter proficiency for Stealth (Yes/No): "),
+        "Athletics": input("Enter proficiency for Athletics (Yes/No): "),
+        "Arcana": input("Enter proficiency for Arcana (Yes/No): "),
+        "History": input("Enter proficiency for History (Yes/No): "),
+        "Investigation": input("Enter proficiency for Investigation (Yes/No): "),
+        "Nature": input("Enter proficiency for Nature (Yes/No): "),
+        "Religion": input("Enter proficiency for Religion (Yes/No): ")
+    }
+    return details
+
+# Function to generate a random NPC
+def generate_npc():
+    npc = {
+        "Name": random.choice(names),
+        "Race": random.choice(races),
+        "Class": random.choice(classes),
+        "Background": random.choice(backgrounds),
+        "Alignment": random.choice(alignments),
+        "Personality": random.choice(personalities),
+        "Motivation": random.choice(motivations),
+        "Quirk": random.choice(quirks),
+        "Ability Scores": generate_ability_scores(),
+        "Character Sheet Details": ask_for_character_details()
+    }
+    return npc
+
+# Generate a specified number of NPCs
+def generate_npcs(number=1):
+    npcs = []
+    for _ in range(number):
+        npcs.append(generate_npc())
+    return npcs
+
+# Example usage
+if __name__ == "__main__":
+    num_npcs = int(input("How many NPCs would you like to generate? "))
+    generated_npcs = generate_npcs(num_npcs)
+    for i, npc in enumerate(generated_npcs, 1):
+        print(f"\nNPC {i}:\n")
+        for key, value in npc.items():
+            if isinstance(value, dict):
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    if isinstance(sub_value, dict):
+                        print(f"  {sub_key}:")
+                        for skill_key, skill_value in sub_value.items():
+                            print(f"    {skill_key}: {skill_value}")
+                    else:
+                        print(f"  {sub_key}: {sub_value}")
+            else:
+                print(f"{key}: {value}")
