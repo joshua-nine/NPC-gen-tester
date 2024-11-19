@@ -6,9 +6,9 @@ from PIL import Image
 # Lists of possible attributes for towns
 town_prefixes = ["Green", "White", "River", "Stone", "Shadow", "Bright", "Silver", "Gold", "Dark", "Iron", "Wind"]
 town_suffixes = ["dale", "ton", "ford", "burg", "ville", "haven", "hold", "grove", "stead", "port", "reach"]
-economies = ["Farming", "Fishing", "Mining", "Trade", "Craftsmanship", "Logging", "Magic"]
-defenses = ["Town Guard", "Wooden Palisade", "Stone Walls", "Militia", "No Defenses", "Magical Barrier"]
-population_sizes = ["Small Village (50-100)", "Large Village (100-300)", "Small Town (300-1000)", "Large Town (1000-3000)", "City (3000-10000)", "Metropolis (10000+)"]
+economies = ["Farming", "Fishing", "Mining", "Trade", "Craftsmanship", "Logging", "Magic", "Tourism", "Alchemy", "Merchant Trading", "Fishing & Shipbuilding"]
+defenses = ["Town Guard", "Wooden Palisade", "Stone Walls", "Militia", "No Defenses", "Magical Barrier", "Watchtower Network", "Underground Bunkers", "Trained Beast Patrols", "Local Mercenary Guild"]
+population_sizes = ["Hamlet (20-50)", "Small Village (50-100)", "Large Village (100-300)", "Small Town (300-1000)", "Large Town (1000-3000)", "City (3000-10000)", "Metropolis (10000+)", "Trading Hub (15000-30000)", "Capital City (50000+)"]
 
 # Function to generate a random town name
 def generate_town_name():
@@ -107,7 +107,7 @@ def generate_town_history(town_name, economy, town_age, annual_festival):
     ]
     community_spirit = "The people of the town are known for their strong sense of community, always ready to help one another in times of need. "
     festival_mention = f"Every year, {town_name} celebrates an annual festival to commemorate its founding and the resilience of its people. " if annual_festival else ""
-    return f"{founding}{economy_growth}{random.choice(significant_events)} {random.choice(significant_events)} {community_spirit}{festival_mention}"
+    return f"{founding}{economy_growth}{random.choice(significant_events)} {random.choice(significant_events)} {random.choice(significant_events)} {community_spirit}{festival_mention}"
 
 # Streamlit UI
 st.set_page_config(layout="wide")
@@ -115,9 +115,18 @@ st.title("🏰 Fantasy Town Generator")
 
 st.sidebar.header("Town Configuration")
 town_name = st.sidebar.text_input("What is the name of your town? (Leave blank for a random name)")
-population_size = st.sidebar.selectbox("Select the population size of your town:", population_sizes)
-economy = st.sidebar.selectbox("What is the main economy of your town?", economies)
-defenses = st.sidebar.selectbox("What type of defenses does your town have?", defenses)
+population_size = st.sidebar.selectbox("Select the population size of your town:", population_sizes + ["Other (Specify Below)"])
+if population_size == "Other (Specify Below)":
+    population_size = st.sidebar.text_input("Specify the population size of your town:")
+
+economy = st.sidebar.selectbox("What is the main economy of your town?", economies + ["Other (Specify Below)"])
+if economy == "Other (Specify Below)":
+    economy = st.sidebar.text_input("Specify the main economy of your town:")
+
+defenses = st.sidebar.selectbox("What type of defenses does your town have?", defenses + ["Other (Specify Below)"])
+if defenses == "Other (Specify Below)":
+    defenses = st.sidebar.text_input("Specify the type of defenses your town has:")
+
 town_age = st.sidebar.number_input("How many years ago was your town founded?", min_value=1, step=1, value=200)
 annual_festival = st.sidebar.checkbox("Does your town have an annual festival?")
 num_notable_locations = st.sidebar.number_input("How many notable locations should your town have?", min_value=1, step=1, value=10)
